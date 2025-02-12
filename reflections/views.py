@@ -1,14 +1,13 @@
 from rest_framework import generics, permissions
-from rest_framework.response import Response
 from .models import Reflection
 from .serializers import ReflectionSerializer
 
 class ReflectionListCreateView(generics.ListCreateAPIView):
     serializer_class = ReflectionSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]  # Ensure user must be logged in
 
     def get_queryset(self):
-        return Reflection.objects.filter(user=self.request.user)
+        return Reflection.objects.filter(user=self.request.user)  # Show only user's reflections
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        serializer.save(user=self.request.user)  # Assign the logged-in user automatically
